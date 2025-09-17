@@ -1,0 +1,354 @@
+:root {
+    --green: #24C3B1;
+}
+.admin table ul {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+.admin table ul li{
+    display: inline-block;
+    padding-left: 0;
+    margin: 10px 0;
+}
+.admin table ul li a.btn{
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+.admin table ul li::after{
+    display: none;
+}
+.admin a.btn{
+    padding: 10px 30px;
+    text-decoration: none;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+.admin a.add{
+    background-color: var(--green);
+}
+.admin a.add:hover{
+    background-color: #12998a;
+}
+.admin a.view{
+    background-color: var(--green);
+}
+.admin a.edit{
+    background-color: orange;
+}
+.admin form .delete{
+    background-color: red;
+    height: auto;
+    color: #fff;
+    width: auto;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.2;
+}
+.admin form .cancel{
+    padding: 9px 30px;
+    margin-left: 10px;
+}
+.admin .input-group{
+    margin-bottom: 10px;
+}
+.admin label{
+    display: block;
+}
+.admin .form-label label{
+    display: inline-block;
+}
+.admin img{
+    max-width: 120px;
+    margin-bottom: 10px;
+}
+.admin table img{
+    max-width: 200px;
+    max-height: 200px;
+}
+.admin form input[type="checkbox"]{
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+}
+.dashboard .sliders, .dashboard .reviews{
+    margin-top: 40px;
+}
+.icons {
+    margin-bottom: 20px;
+}
+.icons .icon {
+    position: relative;
+    padding-left: 25px;
+    width: 40%;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.icons .icon:before {
+    content: '';
+    background-color: red;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+.icons .icon2:before {
+    background-color: orange;
+}
+.icons .icon3:before {
+    background-color: green;
+}
+.icons .icon4:before {
+    background-color: purple;
+}
+.icons .icon5:before {
+    background-color: var(--green);
+}
+.admin .modal-content .print, .admin .modal-content .download{
+    display: inline-block;
+    margin-right: 40px;
+}
+.admin .modal-content .print a, .admin .modal-content .download a{
+    color: var(--green);
+    text-decoration: none;
+}
+
+.admin .modal-content .img{
+    display: inline-block;
+}
+.admin .modal-content{
+    margin-top: 0;
+}
+.admin .modal-content .img img{
+    max-width: 200px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+.admin .modal-content .status .fa-regular{
+    color: green;
+}
+.bottom ul{
+    text-align: center;
+    padding-left: 0;
+}
+.bottom ul li{
+    display: inline-block;
+    margin: 0 10px;
+}
+.bottom ul li a{
+    color: #333;
+    text-decoration: none;
+}
+.bottom ul li a i{
+    color: var(--green);
+}
+.mainhotels .add a{
+    display: inline-block;
+    background-color: #74bb39;
+}
+header .status.active, .bills .status{
+    color: #74bb39;
+}
+header ul.lang{
+    padding-left: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+header ul.lang li{
+    display: inline-block;
+    margin: 0 5px;
+}
+header ul.lang li.current a{
+    color: #0163b4;
+}
+header ul.lang li a{
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+header .status{
+    display: inline-block;
+    margin-right: 100px;
+}
+#percent, #fix, #day_block{
+    display: none;
+}
+ul.btns{
+    padding-left: 0;
+    padding-top: 10px;
+}
+ul.btns li{
+    display: inline-block;
+    margin-right: 5px;
+}
+ul.btns li.current a{
+    background-color: var(--green);
+    color: #fff;
+}
+ul.btns li a{
+    padding: 10px 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all .3s ease;
+}
+ul.btns li a:hover{
+    background-color: var(--green);
+    color: #fff;
+}
+header .logo img{
+    max-width: 140px;
+}
+.bookings .stick{
+    background-color: #74bb39;
+    color: #fff;
+}
+.bookings .status i{
+    color: #74bb39;
+}
+.img-wrap{
+    margin-top: 30px;
+}
+.img-item{
+    position: relative;
+}
+.admin{
+    padding: 30px 0;
+}
+
+.admin .img-item form .delete{
+    position: absolute;
+    right: 12px;
+    top: 5px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+.admin .sidebar ul{
+    padding-left: 0;
+    margin-top: 20px;
+}
+.admin .sidebar ul li{
+    display: block;
+    margin-bottom: 10px;
+}
+.admin .sidebar ul li a{
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+    padding: 5px 20px;
+    border: none;
+    background-color: #fff;
+    display: block;
+    border-radius: 5px;
+    transition: all .3s ease;
+}
+.admin .sidebar ul li:hover a{
+    background-color: var(--green);
+    color: #fff;
+}
+.admin .sidebar ul li:hover a i{
+    color: #fff;
+    transition: color .3s ease;
+}
+.admin .sidebar ul li.current a{
+    background-color: var(--green);
+    color: #fff;
+}
+.admin .sidebar ul li.current a i{
+    color: #fff;
+}
+.admin .sidebar ul li a i{
+    margin-right: 5px;
+    color: var(--green);
+}
+.alert {
+    position: relative;
+    padding: 3px 10px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 14px;
+    text-align: center;
+    opacity: 1;
+    margin: 2px;
+}
+.posts .alert{
+    display: inline-block;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.admin label{
+    display: block;
+}
+.admin form button{
+    width: auto;
+    height: auto;
+    padding: 4px 30px;
+}
+.admin table{
+    width: 100%;
+}
+.admin table td, .admin table th{
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+.admin .aic{
+    align-items: center;
+}
+.admin .aic .btn-wrap{
+    text-align: right;
+}
+.admin form{
+    margin-bottom: 0;
+}
+.posts img{
+    border-radius: 5px;
+}
+.dashboard .auth{
+    text-align: right;
+}
+.dashboard .auth a{
+    text-decoration: none;
+    color: var(--green);
+}
+.dashboard-item{
+    margin-top: 20px;
+    border: 2px solid var(--green);
+    border-radius: 2px;
+    padding: 40px 10px;
+    text-align: center;
+}
+.dashboard-item i{
+    color: var(--green);
+}
+
+.slider{
+    margin-top: 40px;
+}
