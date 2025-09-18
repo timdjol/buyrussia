@@ -30,8 +30,18 @@ class PostController extends Controller
     public function index()
     {
         $ids = [3,52,53,54,55,51,5,57,58,59,56];
-        $count = Post::whereIn('id', $ids)->get();
-        $posts = Post::whereIn('id', $ids)->latest()->paginate(20);
+        $count = Post::with('categories:id') // чтобы не было N+1
+            ->whereHas('categories', fn($q) => $q->whereIn('categories.id', $ids))
+            ->select('posts.*')
+            ->latest('posts.created_at')
+            ->distinct('posts.id')
+            ->get();
+        $posts = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->whereIn('categories.id', $ids))
+            ->select('posts.*')
+            ->latest('posts.created_at')
+            ->distinct('posts.id')
+            ->paginate(20);
         return view('auth.posts.index', compact('posts', 'count'));
     }
 

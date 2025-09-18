@@ -29,6 +29,8 @@ class PostUpdateRequest extends FormRequest
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp,avif|max:2048',
             'address' => 'nullable',
             'graph' => 'nullable',
+            'phone' => 'nullable',
+            'url' => 'nullable',
             'lat' => 'nullable',
             'lng' => 'nullable',
             'comment' => 'nullable',

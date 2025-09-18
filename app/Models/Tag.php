@@ -6,11 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $fillable = [
-        'title',
-        'code',
-        'type'
-    ];
+
+    protected $fillable = ['title', 'type'];
 
     public function posts(){
         return $this->hasMany(Post::class);

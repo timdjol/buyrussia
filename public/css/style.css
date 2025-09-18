@@ -99,3 +99,26 @@ footer a{
     text-decoration: none;
     color: #fff;
 }
+.stick{
+    padding: 5px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #24c3b1;
+    display: inline-block;
+    color: #fff;
+    margin-bottom: 20px;
+    margin-right: 5px;
+}
+.stick.comp{
+    background-color: #f04e19;
+}
+.stick a{
+    color: #fff;
+    text-decoration: none;
+}
+.listings-item .stick{
+    font-size: 12px;
+    margin-bottom: 5px;
+    padding: 3px 10px;
+    display: block;
+}

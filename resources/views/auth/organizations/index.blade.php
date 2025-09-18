@@ -13,13 +13,13 @@
                 <div class="col-md-10">
                     <div class="row aic">
                         <div class="col-md-9">
-                            <h1>Posts</h1>
-                            <p>Count of posts: {{ $count->count() }}</p>
+                            <h1>Organizations</h1>
+                            <p>Count of posts: {{ $count }}</p>
                         </div>
                         <div class="col-md-3">
                             <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('items.create') }}"><i class="fa-solid
-                                fa-plus"></i> Add organization</a>
+                                <a class="btn add" href="{{ route('organizations.create') }}"><i class="fa-solid
+                                fa-plus"></i> Add post</a>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                                 <th>Image</th>
                                 <th>Title</th>
                                 <th>Category</th>
-{{--                                <th>Tag</th>--}}
+                                <th>Tag</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -40,8 +40,17 @@
                             @foreach($posts as $post)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ Storage::url($post->image) }}" width="80px"
-                                             style="margin-bottom: 0"></td>
+                                    <td>
+                                        @isset($post->image)
+                                            <img src="{{ Storage::url($post->image) }}" alt="" width="80px">
+                                        @else
+                                            <img src="data:image/svg+xml;utf8,
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 80'>
+                        <rect width='160' height='80' fill='%23f2f2f2'/>
+                        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-size='12'>no image</text>
+                    </svg>">
+                                        @endisset
+                                    </td>
                                     <td>{{ $post->title }}</td>
                                     <td>
                                         @php
@@ -54,21 +63,22 @@
                                             <div class="alert alert-primary">{{ $category->title ?? '' }}</div>
                                         @endforeach
                                     </td>
-{{--                                    <td>--}}
-{{--                                        @php--}}
-{{--                                            $tags = explode(', ', $post->tag_id);--}}
-{{--                                        @endphp--}}
-{{--                                        @foreach($tags as $cat)--}}
-{{--                                            @php--}}
-{{--                                                $t = \App\Models\Tag::where('id', $cat)->first();--}}
-{{--                                            @endphp--}}
-{{--                                            <div class="alert alert-warning">{{ $t->title ?? '' }}</div>--}}
-{{--                                        @endforeach--}}
-{{--                                    </td>--}}
                                     <td>
-                                        <form action="{{ route('posts.destroy', $post) }}" method="post">
+                                        @isset($post->region->title)
+                                            <div class="alert alert-warning">
+                                                {{ $post->region->title ?? '' }}
+                                            </div>
+                                        @endisset
+                                        @isset($post->company->title)
+                                            <div class="alert alert-warning">
+                                                {{ $post->company->title ?? '' }}
+                                            </div>
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('organizations.destroy', $post) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('posts.edit', $post)
+                                                <li><a class="btn edit" href="{{ route('organizations.edit', $post)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')

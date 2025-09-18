@@ -19,7 +19,7 @@
     <meta name="theme-color" content="#000">
     <!-- Custom Browsers Color End -->
     <link rel="stylesheet" href="{{ route('index') }}/css/main.min.css">
-    <link rel="stylesheet" href="{{ route('index') }}/css/style.css?ver=1.4">
+    <link rel="stylesheet" href="{{ route('index') }}/css/style.css?ver=1.5">
 </head>
 
 <body>

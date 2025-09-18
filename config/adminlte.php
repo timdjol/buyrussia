@@ -299,7 +299,7 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
+        // Navbar organizations:
         [
             'type' => 'navbar-search',
             'text' => 'search',
@@ -310,7 +310,7 @@ return [
             'topnav_right' => true,
         ],
 
-        // Sidebar items:
+        // Sidebar organizations:
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',

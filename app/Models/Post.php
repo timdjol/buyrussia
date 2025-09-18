@@ -20,7 +20,11 @@ class Post extends Model
         'images',
         'address',
         'graph',
-        'comment'
+        'comment',
+        'phone',
+        'url',
+        'region_id',
+        'company_id'
     ];
 
     protected $casts = [
@@ -32,9 +36,13 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function tag()
+    public function region()
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsTo(\App\Models\Tag::class, 'region_id');
+    }
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Tag::class, 'company_id');
     }
 
     public function comments()
@@ -51,4 +59,6 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
 }

@@ -37,8 +37,7 @@
                         @foreach($news as $post)
                             <div class="col-lg-4 col-md-6">
                                 <div class="news-item">
-                                    <a href="{{ route('post', [isset($categories) ? $categories->first()->id :
-                                        $post->categories->first()->id, $post->id]) }}">
+                                    <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
                                              style="background-image: url({{ Storage::url($post->image) }})"></div>
                                     </a>
@@ -48,8 +47,7 @@
                                         ($post->description), 40)}}
                                         </div>
                                         <div class="wrap">
-                                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">더 읽어보기</a>
+                                            <a href="{{ route('post', $post->id) }}">더 읽어보기</a>
                                         </div>
                                     </div>
                                 </div>
@@ -70,8 +68,7 @@
                         @foreach($journals as $post)
                             <div class="col-lg-4 col-md-6">
                                 <div class="news-item">
-                                    <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                                    <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
                                              style="background-image: url({{ Storage::url($post->image) }})"></div>
                                     </a>
@@ -81,8 +78,7 @@
                                         ($post->description), 40)}}
                                         </div>
                                         <div class="wrap">
-                                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">더 읽어보기</a>
+                                            <a href="{{ route('post', $post->id) }}">더 읽어보기</a>
                                         </div>
                                     </div>
                                 </div>
@@ -127,8 +123,19 @@
 {{--                                                    @endisset--}}
 {{--                                                    ">{{ $post->category->title ?? '' }}</div>--}}
 {{--                                            </td>--}}
-                                            <td><a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">{{ $post->title }}</a>
+                                            <td>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg">
+                                                        <a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a>
+                                                    </div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp">
+                                                        <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
+                                                    </div>
+                                                @endisset
+                                            </td>
+                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -167,7 +174,19 @@
 {{--                                                    @endisset--}}
 {{--                                                    ">{{ $post->category ?? '' }}</div>--}}
 {{--                                            </td>--}}
-                                            <td><a href="{{ route('ad', $post) }}">{{ $post->title }}</a></td>
+                                            <td>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg">
+                                                        <a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a>
+                                                    </div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp">
+                                                        <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
+                                                    </div>
+                                                @endisset
+                                            </td>
+                                            <td><a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
                                             </td>
@@ -205,8 +224,19 @@
 {{--                                                    @endisset--}}
 {{--                                                    ">{{ $post->tag->title ?? '' }}</div>--}}
 {{--                                            </td>--}}
-                                            <td><a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">{{ $post->title }}</a>
+                                            <td>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg">
+                                                        <a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a>
+                                                    </div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp">
+                                                        <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
+                                                    </div>
+                                                @endisset
+                                            </td>
+                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -233,28 +263,14 @@
                                     @foreach($agency as $post)
                                         <tr>
                                             <td>
-                                                <div class="tag" style="background-color:
-                                                    @isset($post->tag_id)
-                                                    @if($post->tag_id == 2)
-                                                    #FF7675
-                                                    @elseif($post->tag_id == 3)
-                                                    #F9CA24
-                                                    @elseif($post->tag_id == 4)
-                                                    #BE2EDD
-                                                    @elseif($post->tag_id == 5)
-                                                    #6AB04C
-                                                    @elseif($post->tag_id == 6)
-                                                    #95AFC0
-                                                    @elseif($post->tag_id == 7)
-                                                    #FF7675
-                                                    @else
-                                                    #4c5655
-                                                    @endif
-                                                    @endisset
-                                                    ">{{ $post->tag->title ?? '' }}</div>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg"><a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a></div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
+                                                @endisset
                                             </td>
-                                            <td><a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">{{ $post->title }}</a>
+                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -268,27 +284,14 @@
                                     @foreach($advs as $post)
                                         <tr>
                                             <td>
-                                                <div class="tag" style="background-color:
-                                                    @isset($post->tag_id)
-                                                    @if($post->tag_id == 2)
-                                                    #FF7675
-                                                    @elseif($post->tag_id == 3)
-                                                    #F9CA24
-                                                    @elseif($post->tag_id == 4)
-                                                    #BE2EDD
-                                                    @elseif($post->tag_id == 5)
-                                                    #6AB04C
-                                                    @elseif($post->tag_id == 6)
-                                                    #95AFC0
-                                                    @elseif($post->tag_id == 7)
-                                                    #FF7675
-                                                    @else
-                                                    #4c5655
-                                                    @endif
-                                                    @endisset
-                                                    ">{{ $post->category ?? '' }}</div>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg"><a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a></div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
+                                                @endisset
                                             </td>
-                                            <td><a href="{{ route('ad', $post) }}">{{ $post->title }}</a></td>
+                                            <td><a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
                                             </td>
@@ -301,28 +304,14 @@
                                     @foreach($business as $post)
                                         <tr>
                                             <td>
-                                                <div class="tag" style="background-color:
-                                                    @isset($post->tag_id)
-                                                    @if($post->tag_id == 2)
-                                                    #FF7675
-                                                    @elseif($post->tag_id == 3)
-                                                    #F9CA24
-                                                    @elseif($post->tag_id == 4)
-                                                    #BE2EDD
-                                                    @elseif($post->tag_id == 5)
-                                                    #6AB04C
-                                                    @elseif($post->tag_id == 6)
-                                                    #95AFC0
-                                                    @elseif($post->tag_id == 7)
-                                                    #FF7675
-                                                    @else
-                                                    #4c5655
-                                                    @endif
-                                                    @endisset
-                                                    ">{{ $post->tag->title ?? '' }}</div>
+                                                @isset($post->region_id)
+                                                    <div class="stick reg"><a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a></div>
+                                                @endisset
+                                                @isset($post->company_id)
+                                                    <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
+                                                @endisset
                                             </td>
-                                            <td><a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">{{ $post->title }}</a>
+                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>

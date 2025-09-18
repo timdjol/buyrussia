@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('tags.create') }}"><i class="fa-solid
+                                <a class="btn add" href="{{ route('taglists.create') }}"><i class="fa-solid
                                 fa-plus"></i> Add</a>
                             </div>
                         </div>
@@ -29,6 +29,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Title</th>
+                                <th>Type</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -37,10 +38,13 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $tag->title }}</td>
+                                    <td><div class="alert alert-warning">
+                                            {{ $tag->type }}
+                                        </div></td>
                                     <td>
-                                        <form action="{{ route('tags.destroy', $tag) }}" method="post">
+                                        <form action="{{ route('taglists.destroy', $tag) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('tags.edit', $tag)
+                                                <li><a class="btn edit" href="{{ route('taglists.edit', $tag)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')

@@ -40,8 +40,17 @@
                             @foreach($posts as $post)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ Storage::url($post->image) }}" width="80px"
-                                             style="margin-bottom: 0"></td>
+                                    <td>
+                                        @isset($post->image)
+                                            <img src="{{ Storage::url($post->image) }}" alt="" width="80px">
+                                        @else
+                                            <img src="data:image/svg+xml;utf8,
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 80'>
+                        <rect width='160' height='80' fill='%23f2f2f2'/>
+                        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-size='12'>no image</text>
+                    </svg>">
+                                        @endisset
+                                    </td>
                                     <td>{{ $post->title }}</td>
                                     <td>
                                         @php
@@ -54,17 +63,6 @@
                                             <div class="alert alert-primary">{{ $category->title ?? '' }}</div>
                                         @endforeach
                                     </td>
-{{--                                    <td>--}}
-{{--                                        @php--}}
-{{--                                            $tags = explode(', ', $post->tag_id);--}}
-{{--                                        @endphp--}}
-{{--                                        @foreach($tags as $cat)--}}
-{{--                                            @php--}}
-{{--                                                $t = \App\Models\Tag::where('id', $cat)->first();--}}
-{{--                                            @endphp--}}
-{{--                                            <div class="alert alert-warning">{{ $t->title ?? '' }}</div>--}}
-{{--                                        @endforeach--}}
-{{--                                    </td>--}}
                                     <td>
                                         <form action="{{ route('posts.destroy', $post) }}" method="post">
                                             <ul>

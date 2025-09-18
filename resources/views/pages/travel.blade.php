@@ -28,8 +28,7 @@
                 @foreach($russia as $post)
                     <div class="col-lg-4">
                         <div class="travel-item">
-                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                            <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">
@@ -54,8 +53,7 @@
                 @foreach($kg as $post)
                     <div class="col-lg-4">
                         <div class="travel-item">
-                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                            <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">
@@ -80,8 +78,7 @@
                 @foreach($kz as $post)
                     <div class="col-lg-4">
                         <div class="travel-item">
-                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                            <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">
@@ -106,8 +103,7 @@
                 @foreach($uz as $post)
                     <div class="col-lg-4">
                         <div class="travel-item">
-                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                            <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">

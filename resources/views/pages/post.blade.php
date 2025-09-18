@@ -8,7 +8,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10">
-                    @isset($post->images)
+                    @isset($post->region_id)
+                        <div class="stick reg">
+                            <a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a>
+                        </div>
+                    @endisset
+                    @isset($post->company_id)
+                        <div class="stick comp">
+                            <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
+                        </div>
+                    @endisset
+                    @if($post->images != null)
                         <style>
                             .loc {
                                 padding: 20px;
@@ -83,11 +93,19 @@
                                 @isset($post->graph)
                                     <div class="address">Time: {{ $post->graph }}</div>
                                 @endisset
+                                @isset($post->phone)
+                                    <div class="address">Phone: <a href="tel:{{ $post->phone }}">{{ $post->phone }}</a>
+                                    </div>
+                                @endisset
+                                @isset($post->url)
+                                    <div class="address">Url: <a href="{{ $post->url }}"
+                                                                 target="_blank">{{ $post->url }}</a></div>
+                                @endisset
                             </div>
                         </div>
                     @else
                         <img src="{{ Storage::url($post->image) }}" alt="">
-                    @endisset
+                    @endif
                     @isset($post->comment)
                         <style>
                             .comment .circle img {
@@ -138,76 +156,77 @@
                         }
                     </style>
 
-                        <script>
-                            (function () {
-                                function toYoutubeEmbed(url) {
-                                    try {
-                                        const u = new URL(url);
-                                        const host = u.hostname.replace(/^www\./,'').toLowerCase();
+                    <script>
+                        (function () {
+                            function toYoutubeEmbed(url) {
+                                try {
+                                    const u = new URL(url);
+                                    const host = u.hostname.replace(/^www\./, '').toLowerCase();
 
-                                        if (host === 'youtu.be') {
-                                            const id = u.pathname.replace(/^\/+/,'');
+                                    if (host === 'youtu.be') {
+                                        const id = u.pathname.replace(/^\/+/, '');
+                                        return id ? 'https://www.youtube.com/embed/' + id : null;
+                                    }
+                                    if (host === 'youtube.com' || host === 'm.youtube.com') {
+                                        const p = u.pathname;
+                                        if (p === '/watch') {
+                                            const id = u.searchParams.get('v');
                                             return id ? 'https://www.youtube.com/embed/' + id : null;
                                         }
-                                        if (host === 'youtube.com' || host === 'm.youtube.com') {
-                                            const p = u.pathname;
-                                            if (p === '/watch') {
-                                                const id = u.searchParams.get('v');
-                                                return id ? 'https://www.youtube.com/embed/' + id : null;
-                                            }
-                                            if (p.startsWith('/shorts/')) {
-                                                const id = p.split('/')[2];
-                                                return id ? 'https://www.youtube.com/embed/' + id : null;
-                                            }
-                                            if (p.startsWith('/embed/')) {
-                                                return url; // уже embed
-                                            }
+                                        if (p.startsWith('/shorts/')) {
+                                            const id = p.split('/')[2];
+                                            return id ? 'https://www.youtube.com/embed/' + id : null;
                                         }
-                                    } catch (e) {}
-                                    return null;
+                                        if (p.startsWith('/embed/')) {
+                                            return url; // уже embed
+                                        }
+                                    }
+                                } catch (e) {
                                 }
+                                return null;
+                            }
 
-                                function hydrateEmbeds(root) {
-                                    // Ищем и <oembed url="...">, и <div data-oembed-url="...">
-                                    const nodes = root.querySelectorAll('oembed[url], [data-oembed-url]');
-                                    nodes.forEach(function (el) {
-                                        const url = el.getAttribute('url') || el.getAttribute('data-oembed-url');
-                                        if (!url) return;
+                            function hydrateEmbeds(root) {
+                                // Ищем и <oembed url="...">, и <div data-oembed-url="...">
+                                const nodes = root.querySelectorAll('oembed[url], [data-oembed-url]');
+                                nodes.forEach(function (el) {
+                                    const url = el.getAttribute('url') || el.getAttribute('data-oembed-url');
+                                    if (!url) return;
 
-                                        const embed = toYoutubeEmbed(url);
-                                        if (!embed) return;
+                                    const embed = toYoutubeEmbed(url);
+                                    if (!embed) return;
 
-                                        const iframe = document.createElement('iframe');
-                                        iframe.src = embed;
-                                        iframe.loading = 'lazy';
-                                        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                                        iframe.allowFullscreen = true;
-                                        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                                    const iframe = document.createElement('iframe');
+                                    iframe.src = embed;
+                                    iframe.loading = 'lazy';
+                                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                                    iframe.allowFullscreen = true;
+                                    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
 
-                                        const figure = el.closest('figure.media');
-                                        (figure || el).replaceWith(iframe);
-                                    });
-                                }
+                                    const figure = el.closest('figure.media');
+                                    (figure || el).replaceWith(iframe);
+                                });
+                            }
 
-                                function run() {
-                                    const root = document.getElementById('post-content') || document;
-                                    hydrateEmbeds(root);
-                                }
+                            function run() {
+                                const root = document.getElementById('post-content') || document;
+                                hydrateEmbeds(root);
+                            }
 
-                                // 1) Обычная загрузка
-                                if (document.readyState === 'loading') {
-                                    document.addEventListener('DOMContentLoaded', run);
-                                } else {
-                                    run();
-                                }
-                                // 2) Турболинки / Inertia / Livewire — запускаем на их событиях
-                                document.addEventListener('turbolinks:load', run);
-                                document.addEventListener('turbo:load', run);
-                                document.addEventListener('livewire:navigated', run);
-                            })();
-                        </script>
+                            // 1) Обычная загрузка
+                            if (document.readyState === 'loading') {
+                                document.addEventListener('DOMContentLoaded', run);
+                            } else {
+                                run();
+                            }
+                            // 2) Турболинки / Inertia / Livewire — запускаем на их событиях
+                            document.addEventListener('turbolinks:load', run);
+                            document.addEventListener('turbo:load', run);
+                            document.addEventListener('livewire:navigated', run);
+                        })();
+                    </script>
 
-                        {!! $post->description !!}
+                    {!! $post->description !!}
                     <div class="comment">
                         @auth
                             <div class="row">
@@ -283,8 +302,7 @@
                 @foreach($related as $post)
                     <div class="col-lg-3 col-md-4">
                         <div class="listnews-item">
-                            <a href="{{ route('post', [isset($categories) ? $categories->first()
-                                                ->id : $post->categories->first()->id, $post->id]) }}">
+                            <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">

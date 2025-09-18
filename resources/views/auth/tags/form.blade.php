@@ -22,9 +22,9 @@
                     @endisset
                     <form method="post"
                           @isset($tag)
-                              action="{{ route('tags.update', $tag) }}"
+                              action="{{ route('taglists.update', $tag) }}"
                           @else
-                              action="{{ route('tags.store') }}"
+                              action="{{ route('taglists.store') }}"
                             @endisset
                     >
                         @isset($tag)

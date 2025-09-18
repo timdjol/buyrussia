@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +11,14 @@ Route::middleware('auth')->prefix('auth')->group(function () {
     Route::post('posts/uploadMedia', [\App\Http\Controllers\Admin\PageController::class, 'uploadMedia'])->name('uploadMedia');
     Route::get('/logout', [\App\Http\Controllers\Admin\PageController::class, 'logout'])->name('get-logout');
 
+    Route::get('/tags/search', [PageController::class, 'search_tag'])->name('tags.search');
+    Route::post('/tags',       [PageController::class, 'store_tag'])->name('tags.store');
+
     Route::resource("categories", "App\Http\Controllers\Admin\CategoryController");
-    Route::resource("tags", "App\Http\Controllers\Admin\TagController");
+    Route::resource("taglists", "App\Http\Controllers\Admin\TagController")->parameters(['taglists' => 'tag']); ;
     Route::resource("posts", "App\Http\Controllers\Admin\PostController");
-    Route::resource("items", "App\Http\Controllers\Admin\ItemController");
+    Route::resource('organizations', OrganizationController::class)
+        ->parameters(['organizations' => 'post']);
     Route::resource("comments", "App\Http\Controllers\Admin\CommentController");
     Route::resource("ads", "App\Http\Controllers\Admin\AdController");
     Route::resource("pages", "App\Http\Controllers\Admin\PageController");
@@ -50,10 +55,16 @@ Route::post('/storeComment', [PageController::class, 'storeComment'])->name('sto
 Route::get('/createAd', [PageController::class, 'createAd'])->name('createAd');
 Route::post('/storeAd', [PageController::class, 'storeAd'])->name('storeAd');
 
-Route::get('/tag/{post}', [PageController::class, 'tag'])->name('tag');
-Route::get('/tag/{tag}/{post}', [PageController::class, 'post'])->name('post');
+//Route::get('/tag/{post}', [PageController::class, 'tag'])->name('tag');
+//Route::get('/tag/{tag}/{post}', [PageController::class, 'post'])->name('post');
+
 Route::get('/category/{category}', [PageController::class, 'category'])->name('category');
-Route::get('/category/{category}/{post}', [PageController::class, 'post'])->name('post');
+Route::get('/taglist/{tag}', [PageController::class, 'taglist'])->name('taglist');
+Route::get('/post/{post}', [PageController::class, 'post'])->name('post');
 Route::get('/{ad}', [PageController::class, 'ad'])->name('ad');
+
+
+
+
 
 

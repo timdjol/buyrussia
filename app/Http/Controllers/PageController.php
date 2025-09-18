@@ -13,7 +13,9 @@ use App\Models\Slider;
 use App\Models\Tag;
 use App\Models\Vantage;
 use App\Models\Video;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PageController extends Controller
@@ -24,8 +26,20 @@ class PageController extends Controller
         $news = Post::latest()->get()->take(6);
         $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->take(6)->get();
         $agency = Post::whereIn('category_id', [8,104,105,106,107,108])->latest()->take(6)->get();
-        $advs = Post::where('category_id', 106)->latest()->take(10)->get();
-        $business = Post::where('category_id', 107)->latest()->take(10)->get();
+        $advs = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 106))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->take(10)
+            ->get();
+        $business = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 107))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->take(10)
+            ->get();
         $vantages = Vantage::all();
         $videos = Video::all();
         $bloggers = Blogger::all();
@@ -45,7 +59,7 @@ class PageController extends Controller
         return view('pages.tag', compact('tag'));
     }
 
-    public function post($category, $id)
+    public function post($id)
     {
         $post = Post::where('id', $id)->firstOrFail();
         $related = Post::where('id', '!=', $id)->latest()->take(8)->get();
@@ -197,17 +211,45 @@ class PageController extends Controller
         return view('pages.business', compact('rests', 'hotels', 'sports', 'medical', 'tourism', 'edus', 'laws', 'karaoke', 'beauty', 'academies'));
     }
 
-    public function community()
+    public function community(Request $request)
     {
-        $ads = Ad::paginate(20);
-//        $ads = Post::with('categories:id')
-//            ->whereHas('categories', fn($q) => $q->whereIn('categories.id', [8,104,105,106,107,108]))
-//            ->select('posts.*')
-//            ->latest('posts.created_at')
-//            ->distinct('posts.id')
-//            ->take(12)
-//            ->get();
-        return view('pages.community', compact('ads'));
+        $data = $request->validate([
+            'region'  => ['nullable','integer','exists:tags,id'],
+            'company' => ['nullable','integer','exists:tags,id'],
+            'title'   => ['nullable','string','max:255'], // для вашей строки поиска
+        ]);
+
+        $categoryIds = [106]; // или (array) $request->input('category'); // если из запроса
+
+        $ads = Post::query()
+            ->with(['region','company','user', 'categories:id,title']) // опц: подтянем категории
+            // поиск по названию
+            ->when(!empty($data['title']), fn($q) =>
+            $q->where('title', 'like', '%'.$data['title'].'%')
+            )
+            // фильтр по региону
+            ->when(!empty($data['region']), fn($q) =>
+            $q->where('region_id', $data['region'])
+            )
+            // фильтр по компании
+            ->when(!empty($data['company']), fn($q) =>
+            $q->where('company_id', $data['company'])
+            )
+            // ВАЖНО: фильтр по M2M категориям
+            ->when(!empty($categoryIds), fn($q) =>
+            $q->whereHas('categories', fn($qq) => $qq->whereIn('categories.id', $categoryIds))
+            )
+            ->latest()
+            ->paginate(200)
+            ->appends($request->query());
+
+
+        // Справочники для селектов (можно ограничить только используемыми)
+        $regions  = Tag::where('type', 'region')->orderBy('title')->get(['id','title']);
+        $companies= Tag::where('type', 'company')->orderBy('title')->get(['id','title']);
+        //$ads = Ad::paginate(20);
+
+        return view('pages.community', compact('ads', 'regions', 'companies'));
     }
 
     public function travel()
@@ -285,4 +327,63 @@ class PageController extends Controller
     {
         return view('pages.page');
     }
+
+    public function search_tag(Request $request)
+    {
+        $data = $request->validate([
+            'q'    => ['nullable','string','max:255'],
+            'page' => ['nullable','integer','min:1'],
+            'type' => ['nullable','in:region,company'],
+        ]);
+
+        $q = trim($data['q'] ?? ''); $page = (int)($data['page'] ?? 1); $per = 20;
+
+        $query = DB::table('tags')->select(['id','title'])->when($data['type'] ?? null, fn($q2,$t)=>$q2->where('type',$t));
+        if ($q !== '') $query->where('title', 'like', "%{$q}%");
+
+        $total = (clone $query)->count();
+        $items = $query->orderBy('title')->offset(($page-1)*$per)->limit($per)->get();
+
+        return response()->json([
+            'results' => $items->map(fn($t)=>['id'=>$t->id,'text'=>$t->title])->values(),
+            'pagination' => ['more' => ($page * $per) < $total],
+        ]);
+    }
+
+
+    public function store_tag(Request $request)
+    {
+        $data = $request->validate([
+            'text' => ['required','string','max:255'],
+            'type' => ['required','in:region,company'],
+        ]);
+
+        $tag = \App\Models\Tag::firstOrCreate([
+            'type'  => $data['type'],
+            'title' => trim($data['text']),
+        ]);
+
+        return response()->json([
+            'id' => $tag->id,
+            'text' => $tag->title,
+            'type' => $tag->type,
+        ], 201);
+    }
+
+
+    public function taglist(Request $request, Tag $tag)
+    {
+        $posts = Post::query()
+            ->with(['region','company'])
+            ->where('region_id', $tag->id)
+            ->orWhere('company_id', $tag->id)
+            ->latest()
+            ->paginate(20)
+            ->appends($request->query());
+
+        return view('pages.taglist', compact('posts', 'request'));
+    }
+
 }
+
+

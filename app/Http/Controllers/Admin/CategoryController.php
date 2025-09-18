@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -123,10 +121,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //Post::where('category_id', $category->id)->update(['category_id' => 3]);
         $category->delete();
         session()->flash('success', 'Category ' . $category->title . ' deleted');
-
         return redirect()->route('categories.index');
     }
 }

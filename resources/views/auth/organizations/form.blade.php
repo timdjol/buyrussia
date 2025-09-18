@@ -8,6 +8,80 @@
 
 @section('content')
 
+    <style>
+        form select {
+            height: 150px;
+        }
+
+        .cat-tree {
+            padding-left: 0;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            max-height: 320px;
+            overflow: auto;
+        }
+
+        .cat-node {
+            margin: 0;
+        }
+
+        .node-row {
+            display: grid;
+            grid-template-columns: 28px 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .toggle, .toggle.placeholder {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .toggle.placeholder {
+            cursor: default;
+            opacity: .35;
+        }
+
+        .children {
+            margin: 0;
+            padding-left: 0;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            min-height: 50px;
+            border: 1px solid #ced4da;
+            border-radius: .375rem;
+            padding: 4px;
+        }
+
+        .select2-container .select2-search__field {
+            width: auto !important;
+        }
+
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+
     <div class="page admin">
         <div class="container">
             <div class="row">
@@ -22,9 +96,9 @@
                     @endisset
                     <form enctype="multipart/form-data" method="post"
                           @isset($post)
-                              action="{{ route('posts.update', $post) }}"
+                              action="{{ route('organizations.update', $post) }}"
                           @else
-                              action="{{ route('posts.store') }}"
+                              action="{{ route('organizations.store') }}"
                         @endisset
                     >
                         <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::id() }}">
@@ -45,10 +119,17 @@
                                 <div class="form-group">
                                     @include('auth.layouts.error', ['fieldname' => 'category_id'])
                                     <label>Categories</label>
+
                                     <div class="mb-2 d-flex gap-2">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="expandAll">Expand all</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="collapseAll">Collapse all</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAll">Select all</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="expandAll">
+                                            Expand all
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="collapseAll">
+                                            Collapse all
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAll">
+                                            Select all
+                                        </button>
                                         <button type="button" class="btn btn-sm btn-light" id="clearAll">Clear</button>
                                     </div>
 
@@ -58,37 +139,17 @@
                                         @endforeach
                                     </ul>
                                 </div>
-
-                                <style>
-                                    .cat-tree { padding-left: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; max-height: 320px; overflow: auto; }
-                                    .cat-node { margin: 0; }
-                                    .node-row {
-                                        display: grid;
-                                        grid-template-columns: 28px 1fr;
-                                        gap: 10px;
-                                        align-items: center;
-                                        padding: 8px 10px;
-                                        border-bottom: 1px solid #f0f0f0;
-                                    }
-                                    .toggle, .toggle.placeholder {
-                                        width: 28px; height: 28px;
-                                        display: inline-flex; align-items: center; justify-content: center;
-                                        border: none; background: transparent; cursor: pointer; padding: 0;
-                                    }
-                                    .toggle.placeholder { cursor: default; opacity: .35; }
-                                    .children { margin: 0; padding-left: 0; }
-                                    .checkbox-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-                                </style>
-
                                 <script>
-                                    (function(){
+                                    (function () {
                                         const tree = document.getElementById('catTree');
                                         const showOnlySelectedToggle = document.getElementById('showOnlySelected');
 
-                                        function liOf(el) { return el.closest('li[data-node]'); }
+                                        function liOf(el) {
+                                            return el.closest('li[data-node]');
+                                        }
 
                                         // ---------- toggler ----------
-                                        document.addEventListener('click', function(e){
+                                        document.addEventListener('click', function (e) {
                                             const btn = e.target.closest('.toggle[data-target]');
                                             if (!btn) return;
                                             const id = btn.getAttribute('data-target');
@@ -178,7 +239,7 @@
                                         });
 
                                         // ---------- обработка изменений чекбоксов ----------
-                                        tree?.addEventListener('change', function(e){
+                                        tree?.addEventListener('change', function (e) {
                                             const cb = e.target;
                                             if (cb.name !== 'category_id[]') return;
 
@@ -204,7 +265,8 @@
 
                                         document.getElementById('selectAll')?.addEventListener('click', () => {
                                             tree?.querySelectorAll('input[name="category_id[]"]').forEach(cb => {
-                                                cb.checked = true; cb.indeterminate = false;
+                                                cb.checked = true;
+                                                cb.indeterminate = false;
                                                 cb.closest('.node-row')?.classList.add('selected');
                                             });
                                             // при глобальном выборе предки и так станут "selected" в updateAncestors
@@ -214,7 +276,8 @@
 
                                         document.getElementById('clearAll')?.addEventListener('click', () => {
                                             tree?.querySelectorAll('input[name="category_id[]"]').forEach(cb => {
-                                                cb.checked = false; cb.indeterminate = false;
+                                                cb.checked = false;
+                                                cb.indeterminate = false;
                                                 cb.closest('.node-row')?.classList.remove('selected');
                                             });
                                             if (showOnlySelectedToggle?.checked) applyShowOnlySelected(true);
@@ -231,7 +294,10 @@
                                                     btn.setAttribute('aria-expanded', 'true');
                                                     if (target) target.hidden = false;
                                                     const icon = btn.querySelector('i');
-                                                    if (icon) { icon.classList.remove('fa-plus'); icon.classList.add('fa-minus'); }
+                                                    if (icon) {
+                                                        icon.classList.remove('fa-plus');
+                                                        icon.classList.add('fa-minus');
+                                                    }
                                                 }
                                                 li = li.parentElement.closest('li[data-node]');
                                             }
@@ -272,14 +338,15 @@
                                     },
                                     htmlSupport: {
                                         allow: [
-                                            { name: 'iframe', attributes: true, classes: true, styles: true },
-                                            { name: 'figure', classes: 'media', attributes: true, styles: true },
+                                            {name: 'iframe', attributes: true, classes: true, styles: true},
+                                            {name: 'figure', classes: 'media', attributes: true, styles: true},
                                         ]
                                     },
                                 })
                                 .catch(error => {
                                 });
                         </script>
+
                         <div class="form-group">
                             @include('auth.layouts.error', ['fieldname' => 'image'])
                             <label for="">Image</label>
@@ -289,18 +356,176 @@
                             <input type="file" name="image">
                         </div>
 
+                        {{-- В шапку layout-а или прямо здесь, рядом с CKEditor --}}
+                        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+                                crossorigin="anonymous"></script>
+                        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+                              rel="stylesheet"/>
+                        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @include('auth.layouts.error', ['fieldname' => 'region_id'])
+                                    <label for="region_id">Регион</label>
+                                    <select id="region_id"
+                                            name="region_id"
+                                            class="form-control"
+                                            data-type="region"
+                                            data-endpoint="{{ route('tags.search', ['type' => 'region']) }}">
+                                        @php
+                                            $region = null;
+                                            $regionIdOld = old('region_id', isset($post)? $post->region_id : null);
+                                            if ($regionIdOld) {
+                                                $region = \App\Models\Tag::find($regionIdOld);
+                                            }
+                                        @endphp
+                                        @if($region)
+                                            <option value="{{ $region->id }}" selected>
+                                                {{ $region->title ?? $region->name }}
+                                            </option>
+                                        @endif
+                                    </select>
+                                    <small class="text-muted">Начните печатать, чтобы найти регион.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @include('auth.layouts.error', ['fieldname' => 'company_id'])
+                                    <label for="company_id">Компания</label>
+                                    <select id="company_id"
+                                            name="company_id"
+                                            data-type="company"
+                                            class="form-control"
+                                            data-endpoint="{{ route('tags.search', ['type' => 'company']) }}">
+                                        @php
+                                            $company = null;
+                                            $companyIdOld = old('company_id', isset($post)? $post->company_id : null);
+                                            if ($companyIdOld) {
+                                                $company = \App\Models\Tag::find($companyIdOld);
+                                            }
+                                        @endphp
+                                        @if($company)
+                                            <option value="{{ $company->id }}" selected>
+                                                {{ $company->title ?? $company->name }}
+                                            </option>
+                                        @endif
+                                    </select>
+                                    <small class="text-muted">Выберите компанию.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            (function () {
+                                const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+
+                                function initAjaxCreatableSelect(selector) {
+                                    const el = document.querySelector(selector);
+                                    if (!el) return;
+
+                                    const type = el.dataset.type;                 // "region" | "company"
+                                    const endpoint = el.dataset.endpoint;         // tags.search с ?type=...
+                                    const $el = $(el);
+
+                                    $el.select2({
+                                        width: '100%',
+                                        placeholder: 'Выберите...',
+                                        allowClear: true,
+                                        tags: true,
+                                        minimumInputLength: 1,
+
+                                        createTag: function (params) {
+                                            const term = (params.term || '').trim();
+                                            if (!term) return null;
+                                            return {
+                                                id: '__new__:' + term,
+                                                text: 'Создать: ' + term,
+                                                newTag: true,
+                                                realText: term
+                                            };
+                                        },
+
+                                        insertTag: function (data, tag) {
+                                            if (!tag.realText) return;
+                                            const exists = (data || []).some(i => (i.text || '').toLowerCase() === tag.realText.toLowerCase());
+                                            if (!exists) data.unshift(tag);
+                                        },
+
+                                        ajax: {
+                                            url: endpoint,               // /auth/tags/search?type=region|company
+                                            dataType: 'json',
+                                            delay: 250,
+                                            data: params => ({q: params.term || '', page: params.page || 1, type}), // на случай, если бэк фильтрует
+                                            processResults: (data, params) => {
+                                                params.page = params.page || 1;
+                                                return {
+                                                    results: (data.results || []).map(item => ({
+                                                        id: item.id,
+                                                        text: item.text
+                                                    })),
+                                                    pagination: {more: !!(data.pagination && data.pagination.more)}
+                                                };
+                                            },
+                                            cache: true
+                                        },
+
+                                        templateSelection: function (d) {
+                                            if (d.newTag && d.realText) d.text = d.realText;
+                                            return d.text || d.id;
+                                        }
+                                    })
+                                        .on('select2:select', async function (e) {
+                                            const data = e.params.data;
+                                            if (!data.newTag) return;
+
+                                            try {
+                                                const res = await fetch(@json(route('tags.store')), {
+                                                    method: 'POST',
+                                                    credentials: 'same-origin',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                        'X-CSRF-TOKEN': csrf,
+                                                        'Accept': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({text: data.realText, type}) // <— отправляем type
+                                                });
+
+                                                const ctype = res.headers.get('content-type') || '';
+                                                if (!res.ok) {
+                                                    const msg = ctype.includes('application/json') ? JSON.stringify(await res.json()) : await res.text();
+                                                    throw new Error(`HTTP ${res.status}: ${msg}`);
+                                                }
+                                                const payload = await res.json();
+
+                                                // Подменяем временную опцию __new__:... на реальный id
+                                                $el.find('option[value="' + data.id + '"]').remove();
+                                                const option = new Option(payload.text, payload.id, true, true);
+                                                $el.append(option).trigger('change');
+                                            } catch (err) {
+                                                console.error('Tag create error:', err);
+                                                // убираем временное значение
+                                                $el.val(null).trigger('change');
+                                                alert('Не удалось создать тег. Смотрите консоль/Network.');
+                                            }
+                                        });
+                                }
+
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    initAjaxCreatableSelect('#region_id');
+                                    initAjaxCreatableSelect('#company_id');
+                                });
+                            })();
+                        </script>
+
+
                         <div class="col-md-12">
                             <label for="">Location</label>
                             <!-- Leaflet CSS/JS лучше вынести в layout, но это не обязательно -->
                             <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
                             <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-                            <style>
-                                #map {
-                                    width: 100%;
-                                    height: 500px;
-                                }
-                            </style>
 
                             <div id="map"></div>
 
@@ -343,7 +568,6 @@
                                 map.on('click', function (e) {
                                     const newLat = e.latlng.lat;
                                     const newLng = e.latlng.lng;
-
                                     if (marker) map.removeLayer(marker);
 
                                     // Обновляем инпуты (они у тебя с id="lat" и id="lng")
@@ -357,7 +581,6 @@
                                         .openPopup();
                                 });
                             </script>
-
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -392,11 +615,29 @@
                                 </div>
                                 @include('auth.layouts.error', ['fieldname' => 'graph'])
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Phone</label>
+                                    <input type="text" name="phone" id="phone" value="{{ old('phone', isset($post) ?
+                                $post->phone : null) }}">
+                                </div>
+                                @include('auth.layouts.error', ['fieldname' => 'phone'])
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">WebSite</label>
+                                    <input type="text" name="url" id="url"
+                                           value="{{ old('url', isset($post) ? $post->url : null) }}">
+                                </div>
+                                @include('auth.layouts.error', ['fieldname' => 'url'])
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="">Main information</label>
-                                <textarea name="comment" rows="5">@isset($post){{ $post->comment }}@endisset</textarea>
+                                <textarea name="comment" rows="5">@isset($post)
+                                        {{ $post->comment }}
+                                    @endisset</textarea>
                                 @include('auth.layouts.error', ['fieldname' => 'comment'])
                             </div>
                         </div>
@@ -414,6 +655,7 @@
                                     <img src="{{ Storage::disk('public')->url($path) }}"
                                          alt="" style="height:120px;object-fit:cover;">
                                 @endforeach
+
                             @endif
                         @endisset
                         @csrf
@@ -424,11 +666,5 @@
             </div>
         </div>
     </div>
-
-    <style>
-        form select {
-            height: 150px;
-        }
-    </style>
 
 @endsection

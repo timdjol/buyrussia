@@ -21,9 +21,9 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $tags = Tag::paginate(10);
+        $tags = Tag::paginate(20);
         return view('auth.tags.index', compact('tags'));
     }
 
@@ -45,7 +45,7 @@ class TagController extends Controller
         Tag::create($params);
 
         session()->flash('success', 'Tag ' . $request->title . ' created');
-        return redirect()->route('tags.index');
+        return redirect()->route('taglists.index');
     }
 
     /**
@@ -67,7 +67,7 @@ class TagController extends Controller
         $tag->update($params);
         session()->flash('success', 'Tag ' . $request->title . ' updated');
 
-        return redirect()->route('tags.index');
+        return redirect()->route('taglists.index');
     }
 
     /**
@@ -75,11 +75,12 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        Post::where('tag_id', $tag->id)->update(['tag_id' => null]);
+        Post::where('region_id', $tag->id)->update(['region_id' => null]);
+        Post::where('company_id', $tag->id)->update(['company_id' => null]);
         $tag->delete();
         session()->flash('success', 'Tag ' . $tag->title . ' deleted');
 
-        return redirect()->route('tags.index');
+        return redirect()->route('taglists.index');
     }
 
 }
