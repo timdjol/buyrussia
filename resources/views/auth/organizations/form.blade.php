@@ -79,6 +79,9 @@
             width: 100%;
             height: 500px;
         }
+        #categ3, #categ5, #categ8{
+            display: none;
+        }
     </style>
 
 

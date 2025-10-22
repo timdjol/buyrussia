@@ -1,11 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <style>
+        .google-wrap{
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            display: block;
+            text-align: center;
+        }
+        .google-wrap img{
+            max-width: 30px;
+            margin-left: 10px;
+        }
+        .google-wrap a{
+            text-decoration: none;
+        }
+    </style>
     <div class="page register login">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-md-12">
                     <h1>로그인</h1>
+                    <div class="google-wrap">
+                        <a href="{{ route('google.redirect') }}" class="btn btn-google">
+                            Authorized by <img src="{{ route('index') }}/img/google.svg" alt="">
+                        </a>
+                    </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">

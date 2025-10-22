@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Community')
+@section('title', '한인업소')
 
 @section('content')
 

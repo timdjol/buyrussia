@@ -16,7 +16,7 @@
         : in_array((int) $cat->id, $selectedList, true);
 @endphp
 
-<li class="cat-node" data-node="{{ $cat->id }}">
+<li class="cat-node" data-node="{{ $cat->id }}" id="categ{{ $cat->id }}">
     <div class="node-row" style="padding-left: {{ $pad }}px">
         @if($hasChildren)
             <button type="button" class="toggle" aria-expanded="false"

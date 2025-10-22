@@ -23,7 +23,13 @@ class PageController extends Controller
     public function index()
     {
         $sliders = Slider::all();
-        $news = Post::latest()->get()->take(6);
+        $news = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 51))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->take(6)
+            ->get();
         $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->take(6)->get();
         $agency = Post::whereIn('category_id', [8,104,105,106,107,108])->latest()->take(6)->get();
         $advs = Post::with('categories:id')
@@ -85,12 +91,47 @@ class PageController extends Controller
 
     public function news()
     {
-        $main = Post::latest()->take(1)->get();
-        $maint = Post::latest()->take(2)->offset(1)->get();
-        $categories = Category::take(4)->get();
-        $trends = Post::where('category_id', 52)->latest()->take(2)->get();
-        $latest = Post::where('category_id', 54)->latest()->take(4)->get();
-        $latestlist = Post::where('category_id', 54)->latest()->take(6)->offset(4)->get();
+        $main = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 51))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')   // на случай дублей
+            ->take(1)
+            ->get();
+        $maint = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 51))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')   // на случай дублей
+            ->offset(1)
+            ->take(2)
+            ->get();
+        $trends = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 52))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')   // на случай дублей
+            ->take(6)
+            ->get();
+        $categories = Category::whereNot('id', 3)->take(4)->get();
+        //$latest = Post::whereIn('category_id', [54])->latest()->take(4)->get();
+       $latest = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 51))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->offset(3)
+            ->take(4)
+            ->get();
+        //$latestlist = Post::whereIn('category_id', [54])->latest()->offset(4)->take(4)->get();
+        $latestlist = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 51))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->offset(7)
+            ->take(4)
+            ->get();
         $featured = Post::with('categories:id')
             ->whereHas('categories', fn($q) => $q->where('categories.id', 55))
             ->latest('posts.created_at')
@@ -118,7 +159,7 @@ class PageController extends Controller
             ->latest('posts.created_at')
             ->select('posts.*')
             ->distinct('posts.id')   // на случай дублей
-            ->take(4)
+            ->take(6)
             ->get();
         $mjournals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->skip(5)->take(2)->get();
         $ljournals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->skip(7)->take(16)->get();
@@ -242,7 +283,6 @@ class PageController extends Controller
             ->latest()
             ->paginate(200)
             ->appends($request->query());
-
 
         // Справочники для селектов (можно ограничить только используемыми)
         $regions  = Tag::where('type', 'region')->orderBy('title')->get(['id','title']);

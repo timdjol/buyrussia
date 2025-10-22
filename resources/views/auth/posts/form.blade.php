@@ -8,6 +8,12 @@
 
 @section('content')
 
+    <style>
+        #categ9, #categ12{
+            display: none;
+        }
+    </style>
+
     <div class="page admin">
         <div class="container">
             <div class="row">

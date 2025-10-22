@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'News')
+@section('title', '뉴스')
 
 @section('content')
 
@@ -32,7 +32,6 @@
                             <a href="{{ route('post', $post->id) }}">
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
-{{--                            <div class="tag">{{ $post->tag->title ?? '' }}</div>--}}
                             <div class="overlay"></div>
                             <div class="text-wrap">
                                 <div class="date">{{ $post->created_at->format('d M Y') }}</div>
@@ -40,41 +39,50 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>
     </div>
 
+    <style>
+        .btn-wrap{
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-wrap .more{
+            border-radius: 30px;
+        }
+    </style>
+
     <div class="trending">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>이슈</h2>
+                    <h2>이슈 / Актуальные темы</h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
-                    <div class="row">
-                        @foreach($trends as $post)
-                            <div class="col-md-6">
-                                <div class="trending-item">
-                                    <a href="{{ route('post', $post->id) }}">
-                                        <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
-                                    </a>
-                                    <div class="overlay"></div>
-                                    <div class="text-wrap">
-                                        <h5>{{ $post->title }}</h5>
-                                        <div class="date">{{ $post->created_at->format('d M Y') }}</div>
-                                    </div>
-                                </div>
+                @foreach($trends as $post)
+                    <div class="col-md-4">
+                        <div class="trending-item">
+                            <a href="{{ route('post', $post->id) }}">
+                                <div class="img"
+                                     style="background-image: url({{ Storage::url($post->image) }})"></div>
+                            </a>
+                            <div class="overlay"></div>
+                            <div class="text-wrap">
+                                <h5>{{ $post->title }}</h5>
+                                <div class="date">{{ $post->created_at->format('d M Y') }}</div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-
+                @endforeach
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap">
+                        <a href="{{ route('news_trends', ['category' => '이슈']) }}" class="more">더 읽어</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,8 +92,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>인기 카테고리</h2>
-{{--                    <h2>인기 카테고리 (trend)</h2>--}}
+                    <h2>인기카테고리 / Популярные категории</h2>
                 </div>
             </div>
             <div class="row">
@@ -107,14 +114,29 @@
                 </div>
                 @endforeach
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap">
+                        <a href="{{ route('category_posts', ['category' => '인기카테고리']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <style>
+        .latest .btn-wrap, .editor-item .btn-wrap, .categories-item .btn-wrap{
+            margin-top: 0;
+            text-align: left;
+        }
+    </style>
 
     <div class="latest">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>지난 기사</h2>
+                    <h2>지난기사 / Прошлые статьи
+                    </h2>
                 </div>
             </div>
             <div class="row">
@@ -127,7 +149,6 @@
                                         <div class="img"
                                              style="background-image: url({{ Storage::url($post->image) }})"></div>
                                     </a>
-{{--                                    <div class="tag">{{ $post->tag->title ?? '' }}</div>--}}
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
                                         <div class="date">{{ $post->created_at->format('d M Y') }}</div>
@@ -155,6 +176,13 @@
                     @endforeach
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap">
+                        <a href="{{ route('news_pasts', ['category' => '지난기사']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -162,7 +190,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>편집자 추천</h2>
+                    <h2>편집자추천 / Выбор редакции
+                    </h2>
                 </div>
             </div>
             <div class="row">
@@ -183,6 +212,13 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap">
+                        <a href="{{ route('news_pasts', ['category' => '편집자추천']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

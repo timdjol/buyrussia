@@ -1,9 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Travel')
+@section('title', '커뮤니티')
 
 @section('content')
 
+    <style>
+        .btn-wrap.all{
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-wrap .more{
+            border-radius: 30px;
+        }
+    </style>
 
     <div class="travel_title">
         <div class="overlay"></div>
@@ -39,6 +48,13 @@
                     </div>
                 @endforeach
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap all" style="margin-bottom: 40px">
+                        <a href="{{ route('travel_russia', ['category' => '러시아']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -46,7 +62,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>키르기스스탄 </h2>
+                    <h2>키르기스스탄</h2>
                 </div>
             </div>
             <div class="row">
@@ -63,6 +79,13 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap all" style="margin-bottom: 40px">
+                        <a href="{{ route('travel_kg', ['category' => '키르기스스탄']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -89,6 +112,13 @@
                     </div>
                 @endforeach
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap all" style="margin-bottom: 40px">
+                        <a href="{{ route('travel_kz', ['category' => '카자흐스탄']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -114,8 +144,14 @@
                     </div>
                 @endforeach
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-wrap all" style="margin-bottom: 40px">
+                        <a href="{{ route('travel_uz', ['category' => '우즈베키스탄']) }}" class="more">더 읽어</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 
 @endsection

@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="logo">
-                        <a href="{{ route('index') }}/"><img src="{{ route('index') }}/img/logo.svg" alt=""></a>
+                        <a href="{{ route('index') }}"><img src="{{ route('index') }}/img/logo.svg" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -42,10 +42,20 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="auth">
-                        <ul>
-                            <li><a href="{{ route('login') }}">로그인</a></li>
-                            <li><a href="{{ route('register') }}">회원가입</a></li>
-                        </ul>
+                        @auth
+                            <ul>
+                                <li>
+                                    <a href="{{ route('profile.edit') }}">
+                                        {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                                    </a>
+                                </li>
+                            </ul>
+                        @else
+                            <ul>
+                                <li><a href="{{ route('login') }}">로그인</a></li>
+                                <li><a href="{{ route('register') }}">회원가입</a></li>
+                            </ul>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -88,9 +98,9 @@
                             <li @routeactive(
                             'business*')><a href="{{ route('business') }}">한인 비즈니스</a></li>
                             <li @routeactive(
-                            'communit*')><a href="{{ route('community') }}">한인업소</a></li>
+                            'communit*')><a href="{{ route('community') }}">커뮤니티</a></li>
                             <li @routeactive(
-                            'travel*')><a href="{{ route('travel') }}">커뮤니티</a></li>
+                            'travel*')><a href="{{ route('travel') }}">여행</a></li>
                         </ul>
                     </nav>
                 </div>

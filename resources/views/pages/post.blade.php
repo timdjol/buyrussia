@@ -306,7 +306,7 @@
                                 <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
                             </a>
                             <div class="text-wrap">
-                                <div class="tag">{{ $post->tag->title ?? '' }}</div>
+{{--                                <div class="tag">{{ $post->tag->title ?? '' }}</div>--}}
                                 <h5>{{ $post->title }}</h5>
                             </div>
                         </div>

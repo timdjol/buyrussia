@@ -5,7 +5,7 @@
     $inputId = 'cat-'.$cat->id;
 @endphp
 
-<li class="cat-node" data-node="{{ $cat->id }}">
+<li class="cat-node" data-node="{{ $cat->id }}" id="categ{{ $cat->id }}">
     <div class="node-row" style="padding-left: {{ $pad }}px">
         {{-- Toggler --}}
         @if($hasChildren)

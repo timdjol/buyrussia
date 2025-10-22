@@ -94,7 +94,7 @@ class OrganizationController extends Controller
     public function update(PostRequest $request, Post $post)
     {
         return DB::transaction(function () use ($request, $post) {
-            $data = $request->validated();
+            $data = $request->all();
             $data['code']    = Str::slug($data['title']);
             $data['user_id'] = Auth::id();
 
