@@ -11,7 +11,7 @@
                     @foreach($main as $post)
                         <div class="mainnews-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
 {{--                            <div class="tag">{{ $post->tag->title ?? '' }}</div>--}}
                             <div class="overlay"></div>
@@ -30,7 +30,7 @@
                     @foreach($maint as $post)
                         <div class="mainnews-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="overlay"></div>
                             <div class="text-wrap">
@@ -67,7 +67,7 @@
                         <div class="trending-item">
                             <a href="{{ route('post', $post->id) }}">
                                 <div class="img"
-                                     style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                     style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="overlay"></div>
                             <div class="text-wrap">
@@ -100,7 +100,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="categories-item">
                         <a href="{{ route('category', $category->id) }}">
-                            <div class="img" style="background-image: url({{ Storage::url($category->image) }})"></div>
+                            <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                         </a>
                         <div class="overlay"></div>
                         <div class="text-wrap">
@@ -147,7 +147,7 @@
                                 <div class="latest-item">
                                     <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                             style="background-image: url({{ $post->image_url }})"></div>
                                     </a>
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
@@ -162,7 +162,7 @@
                     @foreach($latestlist as $post)
                         <div class="list-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -199,7 +199,7 @@
                     <div class="col-lg-6">
                         <div class="editor-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>

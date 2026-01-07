@@ -38,7 +38,7 @@
                     <div class="col-lg-4">
                         <div class="travel-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -70,7 +70,7 @@
                     <div class="col-lg-4">
                         <div class="travel-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -102,7 +102,7 @@
                     <div class="col-lg-4">
                         <div class="travel-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -134,7 +134,7 @@
                     <div class="col-lg-4">
                         <div class="travel-item">
                             <a href="{{ route('post', $post->id) }}">
-                                <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                <div class="img" style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>

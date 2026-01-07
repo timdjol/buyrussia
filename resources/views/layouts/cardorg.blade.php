@@ -1,6 +1,6 @@
 <div class="listnews-item">
     <a href="{{ route('post', $post->id) }}">
-        <div class="img" style="background-image: url({{ Storage::url($post->image) }})"></div>
+        <div class="img" style="background-image: url({{ $post->image_url }})"></div>
     </a>
     <div class="text-wrap">
         @isset($post->region_id)
