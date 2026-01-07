@@ -12,6 +12,13 @@
         .btn-wrap .more{
             border-radius: 30px;
         }
+        .listnews-item .text-wrap{
+            font-size: 13px;
+        }
+        .listnews-item .text-wrap ul{
+            padding-left: 10px;
+            margin-bottom: 0;
+        }
         .listnews-item .text-wrap .stick{
             margin-bottom: 10px;
         }

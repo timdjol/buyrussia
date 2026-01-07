@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <style>
+        .check input{
+            width: auto;
+            height: auto;
+            display: inline-block;
+        }
+        .check label{
+            display: inline-block;
+        }
+    </style>
     <div class="page register">
         <div class="container">
             <div class="row">
@@ -30,6 +41,11 @@
                             @include('auth.layouts.error', ['fieldname' => 'password_confirmation'])
                             <label for="">비밀번호 확인</label>
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                        </div>
+
+                        <div class="form-group check">
+                            <input type="checkbox" required name="agree" id="check">
+                            <label for="check"><a href="{{ route('privacy') }}" target="_blank">사용자 계약에</a> 동의합니다</label>
                         </div>
                         <button class="more">등록하다</button>
                     </form>

@@ -30,6 +30,12 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('pages.community', function ($view) {
             $view->with('contacts', Contact::first());
         });
+        View::composer('pages.community_ads', function ($view) {
+            $view->with('contacts', Contact::first());
+        });
+        View::composer('pages.community_law', function ($view) {
+            $view->with('contacts', Contact::first());
+        });
         View::composer('pages.post', function ($view) {
             $view->with('contacts', Contact::first());
         });

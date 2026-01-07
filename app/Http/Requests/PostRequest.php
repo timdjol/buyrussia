@@ -24,24 +24,45 @@ class PostRequest extends FormRequest
 
     private function normalizeSelectId($value): ?int
     {
-        if ($value === '' || $value === null) return null;
-        if (is_numeric($value)) return (int)$value;
+        if ($value === '' || $value === null) {
+            return null;
+        }
+
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
 
         if (is_string($value) && str_starts_with($value, '__new__:')) {
             $text = trim(substr($value, 9));
             if ($text === '') return null;
 
-            // создаём тег тем же методом, что и в store_tag
-            $existing = Tag::where('title', $text)->first();
-            if ($existing) return (int)$existing->id;
+            /**
+             * 🚑 ВАЖНО:
+             * Строка уже пришла ИСПОРЧЕННОЙ (CP866).
+             * Мы восстанавливаем UTF-8 обратно.
+             */
+            if (!mb_check_encoding($text, 'UTF-8')) {
+                $text = iconv('CP866', 'UTF-8//IGNORE', $text);
+            }
 
-            // если в модели timestamps выключены — можно Tag::create
-            // иначе — прямой insert:
-            $id = DB::table('tags')->insertGetId(['title' => $text /*,'created_at'=>now(),'updated_at'=>now()*/]);
-            return (int)$id;
+            $text = trim($text);
+
+            if ($existing = Tag::where('title', $text)->first()) {
+                return (int) $existing->id;
+            }
+
+            $tag = Tag::create([
+                'title' => $text,
+                'type'  => $this->input('type', 'region'),
+            ]);
+
+            return (int) $tag->id;
         }
+
         return null;
     }
+
+
 
 
     public function rules(): array

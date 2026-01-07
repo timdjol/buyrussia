@@ -13,13 +13,15 @@
     <meta property="og:image" content="path/to/image.jpg">
     <link rel="icon" href="{{route('index')}}/img/favicon.jpg">
     <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.jpg">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Template Basic Images End -->
 
     <!-- Custom Browsers Color Start -->
     <meta name="theme-color" content="#000">
     <!-- Custom Browsers Color End -->
     <link rel="stylesheet" href="{{ route('index') }}/css/main.min.css">
-    <link rel="stylesheet" href="{{ route('index') }}/css/style.css?ver=1.5">
+    <link rel="stylesheet" href="{{ route('index') }}/css/style.css?ver=1.7">
 </head>
 
 <body>

@@ -3,4 +3,6 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\ViewServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    SocialiteProviders\Manager\ServiceProvider::class,
 ];

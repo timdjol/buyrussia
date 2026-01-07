@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TravelController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,10 +52,20 @@ Route::get('/news', [PageController::class, 'news'])->name('news');
 Route::get('/journals', [PageController::class, 'journals'])->name('journals');
 Route::get('/organizations', [PageController::class, 'organizations'])->name('organizations');
 Route::get('/business', [PageController::class, 'business'])->name('business');
-Route::get('/community', [PageController::class, 'community'])->name('community');
+Route::get('/community',        [PageController::class, 'community'])->name('community');
+Route::get('/community/filter', [PageController::class, 'communityFilter'])->name('community.filter');
+
+Route::get('/community/ads',        [PageController::class, 'community_ads'])->name('community_ads');
+Route::get('/community/ads/filter', [PageController::class, 'communityAdsFilter'])->name('community_ads.filter');
+
+Route::get('/community/laws',        [PageController::class, 'community_law'])->name('community_law');
+Route::get('/community/laws/filter', [PageController::class, 'communityLawFilter'])->name('community_law.filter');
+
+
 Route::get('/travel', [PageController::class, 'travel'])->name('travel');
 Route::get('/search', [PageController::class, 'search'])->name('search');
 Route::get('/searchad', [PageController::class, 'searchad'])->name('searchad');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
 //news
 Route::get('/news/trends/{category?}', [NewsController::class, 'trends'])->name('news_trends');
@@ -109,7 +121,19 @@ Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])
     ->name('google.callback');
 
+Route::get('/auth/naver/redirect', [SocialLoginController::class, 'naverRedirect'])->name('naver.redirect');
+Route::get('/auth/naver/callback', [SocialLoginController::class, 'naverCallback'])->name('naver.callback');
 
+Route::get('/auth/kakao/redirect', [SocialLoginController::class, 'kakaoRedirect'])->name('kakao.redirect');
+Route::get('/auth/kakao/callback', [SocialLoginController::class, 'kakaoCallback'])->name('kakao.callback');
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    //Artisan::call('web:clear');
+    return "Cache cleared successfully";
+});
 
 
 

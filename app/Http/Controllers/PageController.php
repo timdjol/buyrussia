@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\Blogger;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Page;
 use App\Models\Post;
 use App\Models\Slider;
 use App\Models\Tag;
@@ -30,15 +31,7 @@ class PageController extends Controller
             ->distinct('posts.id')
             ->take(6)
             ->get();
-        $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->take(6)->get();
-        $agency = Post::whereIn('category_id', [8,104,105,106,107,108])->latest()->take(6)->get();
-        $advs = Post::with('categories:id')
-            ->whereHas('categories', fn($q) => $q->where('categories.id', 106))
-            ->latest('posts.created_at')
-            ->select('posts.*')
-            ->distinct('posts.id')
-            ->take(10)
-            ->get();
+        $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest('created_at')->take(6)->get();
         $business = Post::with('categories:id')
             ->whereHas('categories', fn($q) => $q->where('categories.id', 107))
             ->latest('posts.created_at')
@@ -46,11 +39,26 @@ class PageController extends Controller
             ->distinct('posts.id')
             ->take(10)
             ->get();
+        $advs = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 106))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->take(10)
+            ->get();
+        $laws = Post::with('categories:id')
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 105))
+            ->latest('posts.created_at')
+            ->select('posts.*')
+            ->distinct('posts.id')
+            ->take(10)
+            ->get();
+
         $vantages = Vantage::all();
         $videos = Video::all();
         $bloggers = Blogger::all();
 
-        return view('index', compact('sliders', 'news', 'journals', 'agency', 'business', 'vantages', 'videos', 'bloggers', 'advs'));
+        return view('index', compact('sliders', 'news', 'journals', 'laws', 'business', 'vantages', 'videos', 'bloggers', 'advs'));
     }
 
     public function category($category)
@@ -68,7 +76,7 @@ class PageController extends Controller
     public function post($id)
     {
         $post = Post::where('id', $id)->firstOrFail();
-        $related = Post::where('id', '!=', $id)->latest()->take(8)->get();
+        $related = Post::where('id', '!=', $id)->latest('created_at')->take(8)->get();
         $user = Auth::user();
         $comments = Comment::where('post_id', $id)->latest()->get();
         return view('pages.post', compact('post', 'related', 'user', 'comments'));
@@ -145,8 +153,8 @@ class PageController extends Controller
 
     public function journals()
     {
-        $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->take(2)->get();
-        $tjournals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->skip(2)->take(3)->get();
+        $journals = Post::whereIn('category_id', [5,56,57,58,59])->latest('created_at')->take(2)->get();
+        $tjournals = Post::whereIn('category_id', [5,56,57,58,59])->latest('created_at')->skip(2)->take(3)->get();
         $travels = Post::with('categories:id')
             ->whereHas('categories', fn($q) => $q->where('categories.id', 57))
             ->latest('posts.created_at')
@@ -161,18 +169,18 @@ class PageController extends Controller
             ->distinct('posts.id')   // на случай дублей
             ->take(6)
             ->get();
-        $mjournals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->skip(5)->take(2)->get();
-        $ljournals = Post::whereIn('category_id', [5,56,57,58,59])->latest()->skip(7)->take(16)->get();
+        $mjournals = Post::whereIn('category_id', [5,56,57,58,59])->latest('created_at')->skip(5)->take(2)->get();
+        $ljournals = Post::whereIn('category_id', [5,56,57,58,59])->latest('created_at')->skip(7)->take(16)->get();
         return view('pages.journal', compact('journals', 'tjournals', 'travels', 'populars', 'mjournals', 'ljournals'));
     }
 
     public function organizations()
     {
         $sliders = Slider::all();
-        $institutions = Post::whereIn('category_id', [32,37,42,47])->latest()->take(8)->get();
-        $kor_orgs = Post::whereIn('category_id', [33,45,50,38])->latest()->take(8)->get();
-        $edus = Post::whereIn('category_id', [34,48,39,43])->latest()->take(8)->get();
-        $medias = Post::whereIn('category_id', [35,49,40,44])->latest()->take(8)->get();
+        $institutions = Post::whereIn('category_id', [32,37,42,47])->latest('created_at')->take(8)->get();
+        $kor_orgs = Post::whereIn('category_id', [33,45,50,38])->latest('created_at')->take(8)->get();
+        $edus = Post::whereIn('category_id', [34,48,39,43])->latest('created_at')->take(8)->get();
+        $medias = Post::whereIn('category_id', [35,49,40,44])->latest('created_at')->take(8)->get();
 
         return view('pages.organization', compact('sliders', 'institutions', 'kor_orgs', 'edus', 'medias'));
     }
@@ -252,45 +260,91 @@ class PageController extends Controller
         return view('pages.business', compact('rests', 'hotels', 'sports', 'medical', 'tourism', 'edus', 'laws', 'karaoke', 'beauty', 'academies'));
     }
 
-    public function community(Request $request)
+
+    protected function buildAdsQuery(Request $request)
     {
         $data = $request->validate([
-            'region'  => ['nullable','integer','exists:tags,id'],
-            'company' => ['nullable','integer','exists:tags,id'],
-            'title'   => ['nullable','string','max:255'], // для вашей строки поиска
+            'title' => ['nullable','string','max:255'],
+            'kind'  => ['nullable','string','max:50'],
         ]);
 
-        $categoryIds = [106]; // или (array) $request->input('category'); // если из запроса
+        $q = Post::query()
+            ->with(['region','company','user','categories:id,title'])
+            ->latest();
 
-        $ads = Post::query()
-            ->with(['region','company','user', 'categories:id,title']) // опц: подтянем категории
-            // поиск по названию
-            ->when(!empty($data['title']), fn($q) =>
-            $q->where('title', 'like', '%'.$data['title'].'%')
-            )
-            // фильтр по региону
-            ->when(!empty($data['region']), fn($q) =>
-            $q->where('region_id', $data['region'])
-            )
-            // фильтр по компании
-            ->when(!empty($data['company']), fn($q) =>
-            $q->where('company_id', $data['company'])
-            )
-            // ВАЖНО: фильтр по M2M категориям
-            ->when(!empty($categoryIds), fn($q) =>
-            $q->whereHas('categories', fn($qq) => $qq->whereIn('categories.id', $categoryIds))
-            )
-            ->latest()
-            ->paginate(200)
+        if (!empty($data['title'])) {
+            $q->where('title', 'like', '%'.$data['title'].'%');
+        }
+
+        if (!empty($data['kind']) && $data['kind'] !== 'all') {
+            $q->where('kind', $data['kind']);
+        }
+
+        return $q;
+    }
+
+    public function community(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 107))
+            ->paginate(20)
             ->appends($request->query());
 
-        // Справочники для селектов (можно ограничить только используемыми)
-        $regions  = Tag::where('type', 'region')->orderBy('title')->get(['id','title']);
-        $companies= Tag::where('type', 'company')->orderBy('title')->get(['id','title']);
-        //$ads = Ad::paginate(20);
-
-        return view('pages.community', compact('ads', 'regions', 'companies'));
+        return view('pages.community', compact('ads'));
     }
+
+    public function community_ads(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 106))
+            ->paginate(3)
+            ->appends($request->query());
+
+        return view('pages.community_ads', compact('ads'));
+    }
+
+    public function community_law(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 105))
+            ->paginate(20)
+            ->appends($request->query());
+
+        return view('pages.community_law', compact('ads'));
+    }
+
+
+    public function communityFilter(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 107))
+            ->paginate(20)
+            ->appends($request->query());
+
+        return view('layouts._table', compact('ads'));
+    }
+
+    public function communityAdsFilter(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 106))
+            ->paginate(20)
+            ->appends($request->query());
+
+        return view('layouts._table', compact('ads'));
+    }
+
+    public function communityLawFilter(Request $request)
+    {
+        $ads = $this->buildAdsQuery($request)
+            ->whereHas('categories', fn($q) => $q->where('categories.id', 105))
+            ->paginate(20)
+            ->appends($request->query());
+
+        return view('layouts._table', compact('ads'));
+    }
+
+
 
     public function travel()
     {
@@ -422,6 +476,12 @@ class PageController extends Controller
             ->appends($request->query());
 
         return view('pages.taglist', compact('posts', 'request'));
+    }
+
+    public function privacy()
+    {
+        $page = Page::where('id', 3)->first();
+        return view('pages.privacy', compact('page'));
     }
 
 }

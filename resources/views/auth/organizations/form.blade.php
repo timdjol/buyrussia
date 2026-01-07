@@ -79,7 +79,7 @@
             width: 100%;
             height: 500px;
         }
-        #categ3, #categ5, #categ8{
+        #categ3, #categ5{
             display: none;
         }
     </style>
@@ -320,6 +320,41 @@
                                     })();
                                 </script>
 
+                            </div>
+                        </div>
+
+                        <div class="row">
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-group">--}}
+{{--                                    @include('auth.layouts.error', ['fieldname' => 'type'])--}}
+{{--                                    <label for="">Type</label>--}}
+{{--                                    <select name="type" id="" style="height: auto">--}}
+{{--                                        @isset($post)--}}
+{{--                                            <option value="{{ $post->type }}">{{ $post->type }}</option>--}}
+{{--                                        @endisset--}}
+{{--                                        <option value="business">문의 (Бизнес-запросы)</option>--}}
+{{--                                        <option value="ads">광고 (Объявления)</option>--}}
+{{--                                        <option value="legal">법률·의료 (Юридическая помощь и здравоохранение)</option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @include('auth.layouts.error', ['fieldname' => 'kind'])
+                                    <label for="">Kind</label>
+                                    <select name="kind" id="" style="height: auto">
+                                        @isset($post)
+                                            <option value="{{ $post->kind }}">{{ $post->kind }}</option>
+                                        @endisset
+                                        <option value="recruit">문의 - 두어인원모집</option>
+                                        <option value="companion">문의 - 동행구함</option>
+                                        <option value="buy">광고 - 사고</option>
+                                        <option value="sell">광고 - 팔고</option>
+                                        <option value="law">법률·의료 - 변호사</option>
+                                        <option value="health">법률·의료 - 건강</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 

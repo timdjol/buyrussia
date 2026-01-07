@@ -1,9 +1,9 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('layouts.app')
 
 @section('title', 'Home page')
 
 @section('content')
-
     <div class="slider">
         <div class="owl-carousel owl-slider">
             @foreach($sliders as $slider)
@@ -39,7 +39,7 @@
                                 <div class="news-item">
                                     <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                             style="background-image: url({{ $post->image_url }})"></div>
                                     </a>
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
@@ -70,7 +70,7 @@
                                 <div class="news-item">
                                     <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                             style="background-image: url({{ $post->image_url }})"></div>
                                     </a>
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
@@ -98,9 +98,9 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="listings-item">
-                                <h4>에이전트 신설</h4>
+                                <h4>문의</h4>
                                 <table>
-                                    @foreach($agency as $post)
+                                    @foreach($business as $post)
                                         <tr>
 {{--                                            <td>--}}
 {{--                                                <div class="tag" style="background-color:--}}
@@ -134,8 +134,7 @@
                                                         <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
                                                     </div>
                                                 @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                                                <a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -148,7 +147,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="listings-item">
-                                <h4>공지 사항</h4>
+                                <h4>광고</h4>
 {{--                                <h4>공지 사항(anons)</h4>--}}
                                 <table>
                                     @foreach($advs as $post)
@@ -185,8 +184,7 @@
                                                         <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
                                                     </div>
                                                 @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
+                                                <a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
                                             </td>
@@ -198,10 +196,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="listings-item">
-                                <h4>한국 비즈니스</h4>
+                                <h4>법률·의료</h4>
 {{--                                <h4>한국 비즈니스(business)</h4>--}}
                                 <table>
-                                    @foreach($business as $post)
+                                    @foreach($laws as $post)
                                         <tr>
 {{--                                            <td>--}}
 {{--                                                <div class="tag" style="background-color:--}}
@@ -235,8 +233,7 @@
                                                         <a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a>
                                                     </div>
                                                 @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                                                <a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -260,7 +257,7 @@
                             </ul>
                             <div class="tab-content listings-item current" id="tab-1">
                                 <table>
-                                    @foreach($agency as $post)
+                                    @foreach($business as $post)
                                         <tr>
                                             <td>
                                                 @isset($post->region_id)
@@ -269,8 +266,7 @@
                                                 @isset($post->company_id)
                                                     <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
                                                 @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                                                <a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
@@ -283,15 +279,12 @@
                                 <table>
                                     @foreach($advs as $post)
                                         <tr>
-                                            <td>
-                                                @isset($post->region_id)
+                                            <td>@isset($post->region_id)
                                                     <div class="stick reg"><a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a></div>
                                                 @endisset
                                                 @isset($post->company_id)
                                                     <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
-                                                @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
+                                                @endisset<a href="{{ route('post', $post) }}">{{ $post->title }}</a></td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>
                                             </td>
@@ -301,17 +294,14 @@
                             </div>
                             <div class="tab-content listings-item" id="tab-3">
                                 <table>
-                                    @foreach($business as $post)
+                                    @foreach($laws as $post)
                                         <tr>
-                                            <td>
-                                                @isset($post->region_id)
+                                            <td>@isset($post->region_id)
                                                     <div class="stick reg"><a href="{{ route('taglist', $post->region_id) }}">{{ $post->region->title }}</a></div>
                                                 @endisset
                                                 @isset($post->company_id)
                                                     <div class="stick comp"><a href="{{ route('taglist', $post->company_id) }}">{{ $post->company->title }}</a></div>
-                                                @endisset
-                                            </td>
-                                            <td><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                                                @endisset<a href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                                             </td>
                                             <td>
                                                 <div class="time">{{ $post->created_at->format('H:i') }}</div>

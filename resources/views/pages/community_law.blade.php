@@ -13,9 +13,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul>
-                        <li><a href="{{ route('community') }}" class="active">문의</a></li>
+                        <li><a href="{{ route('community') }}">문의</a></li>
                         <li><a href="{{ route('community_ads') }}">광고</a></li>
-                        <li><a href="{{ route('community_law') }}">법률·의료</a></li>
+                        <li><a href="{{ route('community_law') }}" class="active">법률·의료</a></li>
                     </ul>
                 </div>
             </div>
@@ -26,12 +26,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-md-12">
-                    <h1>문의</h1>
-                    <div class="descr">
-                        러시아 및 독립국가연합(CIS)에서 직장을 찾고 계신가요? 러시아와 CIS 지역에서 생활하거나 일하는 것을 고려하고 있는 교민 및 한국에 계신 분들 중 러시아
-                        및 CIS에서
-                        새로운 기회를 찾고자 하는 분들을 위해 구인구직 정보를 소개합니다.
-                    </div>
+                    <h1>법률·의료</h1>
+{{--                    <div class="descr">--}}
+{{--                        해외 알바 다나와 게시판은 각 숙소에서의 스태프(매니저, 아르바이트, 주방 아주머니 등)의 <br>--}}
+{{--                        구민/구직 관련 정보를 교환하는 게시판으로, 민다에서는 정보교환의 온라인 공간을 제공할 뿐 중개에 관여하지 않으며, <br>--}}
+{{--                        그에 따른 과실 또는 손해발생에 대해 일체 책임을 지지 않음을 알려드립니다.--}}
+{{--                    </div>--}}
                     <div class="row aic">
                         <div class="col-md-8">
                             <form id="kind-form">
@@ -40,12 +40,12 @@
                                     <label for="kind_all">전체</label>
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" id="kind_recruit" name="kind" value="recruit">
-                                    <label for="kind_recruit">두어인원모집</label>
+                                    <input type="radio" id="kind_law" name="kind" value="law">
+                                    <label for="kind_law">변호사</label>
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" id="kind_companion" name="kind" value="companion">
-                                    <label for="kind_companion">동행구함</label>
+                                    <input type="radio" id="kind_health" name="kind" value="health">
+                                    <label for="kind_health">건강</label>
                                 </div>
                             </form>
                         </div>
@@ -68,11 +68,10 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div id="ads-wrapper"
-                                 data-filter-url="{{ route('community.filter') }}"
-                                 data-page-url="{{ route('community') }}">
+                                 data-filter-url="{{ route('community_law.filter') }}"
+                                 data-page-url="{{ route('community_law') }}">
                                 @include('layouts._table', ['ads' => $ads])
                             </div>
-
                         </div>
                     </div>
                 </div>

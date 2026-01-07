@@ -53,15 +53,13 @@
                                     </td>
                                     <td>{{ $post->title }}</td>
                                     <td>
-                                        @php
-                                            $cats = explode(', ', $post->category_id)
-                                        @endphp
-                                        @foreach($cats as $cat)
-                                            @php
-                                                $category = \App\Models\Category::where('id', $cat)->first();
-                                            @endphp
-                                            <div class="alert alert-primary">{{ $category->title ?? '' }}</div>
-                                        @endforeach
+                                        @forelse ($post->categories as $category)
+                                            <div class="alert alert-primary">
+                                                {{ $category->title }}
+                                            </div>
+                                        @empty
+                                            <span class="text-muted">—</span>
+                                        @endforelse
                                     </td>
                                     <td>
                                         <form action="{{ route('posts.destroy', $post) }}" method="post">

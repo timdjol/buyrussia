@@ -24,7 +24,7 @@
                                 <div class="journal-item">
                                     <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                             style="background-image: url({{ $post->image_url }})"></div>
                                     </a>
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
@@ -41,7 +41,7 @@
                                 <div class="journal-item">
                                     <a href="{{ route('post', $post->id) }}">
                                         <div class="img"
-                                             style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                             style="background-image: url({{ $post->image_url }})"></div>
                                     </a>
                                     <div class="text-wrap">
                                         <h5>{{ $post->title }}</h5>
@@ -62,7 +62,7 @@
                             <div class="col-md-3">
                                 <a href="{{ route('post', $post->id) }}">
                                     <div class="img"
-                                         style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                         style="background-image: url({{ $post->image_url }})"></div>
                                 </a>
                             </div>
                             <div class="col-md-9">
@@ -101,7 +101,7 @@
                         <div class="popular-item">
                             <a href="{{ route('post', $post->id) }}">
                                 <div class="img"
-                                     style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                     style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -131,7 +131,7 @@
                         <div class="listnews-item">
                             <a href="{{ route('post', $post->id) }}">
                                 <div class="img"
-                                     style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                     style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>
@@ -147,7 +147,7 @@
                         <div class="listnews-item">
                             <a href="{{ route('post', $post->id) }}">
                                 <div class="img"
-                                     style="background-image: url({{ Storage::url($post->image) }})"></div>
+                                     style="background-image: url({{ $post->image_url }})"></div>
                             </a>
                             <div class="text-wrap">
                                 <h5>{{ $post->title }}</h5>

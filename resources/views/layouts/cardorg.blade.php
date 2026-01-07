@@ -14,20 +14,22 @@
             </div>
         @endisset
         <h5>{{ $post->title }}</h5>
-        <ul>
-            @isset($post->address)
-                <li>{{ $post->address }}</li>
-            @endisset
-            @isset($post->graph)
-                <li>{{ $post->graph }}</li>
-            @endisset
-            @isset($post->address)
-                <li>{{ $post->phone }}</li>
-            @endisset
-            @isset($post->url)
-                <li>{{ $post->url }}</li>
-            @endisset
-        </ul>
+        <div class="text-wrap">
+            <ul>
+                @isset($post->address)
+                    <li>{{ $post->address }}</li>
+                @endisset
+                @isset($post->graph)
+                    <li>{{ $post->graph }}</li>
+                @endisset
+                @isset($post->address)
+                    <li>{{ $post->phone }}</li>
+                @endisset
+                @isset($post->url)
+                    <li><a href="{{ $post->url }}" target="_blank">{{ $post->url }}</a></li>
+                @endisset
+            </ul>
+        </div>
         <div class="btn-wrap">
             <a href="{{ route('post', $post->id) }}">더 읽어보기</a>
         </div>

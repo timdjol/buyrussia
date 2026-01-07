@@ -17,6 +17,8 @@
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
         "laravolt/avatar": "^6.0",
+        "socialiteproviders/kakao": "^4.3",
+        "socialiteproviders/naver": "^4.1",
         "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {

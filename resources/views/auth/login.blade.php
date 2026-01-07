@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Login')
+
 @section('content')
 
     <style>
@@ -27,6 +29,16 @@
                     <div class="google-wrap">
                         <a href="{{ route('google.redirect') }}" class="btn btn-google">
                             Authorized by <img src="{{ route('index') }}/img/google.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="google-wrap">
+                        <a href="{{ route('kakao.redirect') }}">
+                            Authorized by <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Kakao_logo.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="google-wrap">
+                        <a href="{{ route('naver.redirect') }}">
+                            Authorized by <img src="https://seekvectors.com/files/download/Naver-Logo-04.png" alt="">
                         </a>
                     </div>
                     <form method="POST" action="{{ route('login') }}">

@@ -225,7 +225,6 @@
                             document.addEventListener('livewire:navigated', run);
                         })();
                     </script>
-
                     {!! $post->description !!}
                     <div class="comment">
                         @auth
